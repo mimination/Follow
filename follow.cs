@@ -4,7 +4,6 @@
     using Il2CppDecaGames.RotMG.Managers;
     using Il2CppDecaGames.RotMG.UI.Buttons;
     using UnityEngine.UI;
-    using System.Text.RegularExpressions;
 
 namespace Follower
     {
@@ -23,7 +22,7 @@ namespace Follower
         // scene and management
         private GameObject? gameControllerObj;
         private ApplicationManager? applicationManagerObj;
-        private OIGNDMLLBGC? sceneInformation;
+        private INOGPMEIHLB? sceneInformation;
 
         // player and movement
         private GameObject player;
@@ -50,8 +49,7 @@ namespace Follower
 
     // Call all functions
          public override void OnUpdate()
-         {
-            HandlePlayerInitialization();
+         {           
             HandleInput();
             HandleTargetPosition();
             MovePlayer();
@@ -59,7 +57,8 @@ namespace Follower
             HandlePortalFollowing();
             ReacquireAndFollowTarget();
             ProcessCommandMessages();
-         }
+            HandlePlayerInitialization();
+        }
 
 
 
@@ -72,21 +71,6 @@ namespace Follower
             }
         }
 
-        private void SetupGameObjects()
-        {
-            gameControllerObj = GameObject.Find("GameController");
-
-            applicationManagerObj = gameControllerObj?.GetComponent<ApplicationManager>();
-
-            sceneInformation = applicationManagerObj?._KKBAJFABEKE_k__BackingField;
-
-
-            if (player == null)
-            {
-                player = GameObject.Find("Player/Player");
-            }
-        }
-
         private void HandlePlayerInitialization()
         {
             if (player == null)
@@ -95,7 +79,20 @@ namespace Follower
             }
         }
 
+        private void SetupGameObjects()
+        {
+            gameControllerObj = GameObject.Find("GameController");
 
+            applicationManagerObj = gameControllerObj?.GetComponent<ApplicationManager>();
+
+            sceneInformation = applicationManagerObj?._JLCMKLPBLMF_k__BackingField;
+
+
+            if (player == null)
+            {
+                player = GameObject.Find("Player/Player");
+            }
+        }
 
         // self movement (hardcoded to WASD, if you want to change keybinds you can create a func to take horizontal + vertical inputs, you will need to account for slide)       
         private void HandleInput()
@@ -228,12 +225,12 @@ namespace Follower
         }
         private void HandlePortalFollowing()
         {
-            if (sceneInformation == null || sceneInformation.JHBEGLMFGDN == null)
+            if (sceneInformation == null || sceneInformation.IEBGLNKIIMB == null)
             {
                 return;
             }
 
-            foreach (var entry in sceneInformation.JHBEGLMFGDN)
+            foreach (var entry in sceneInformation.IEBGLNKIIMB)
             {
                 if (!loggedKeys.Contains(entry.Key.ToString()))
                 {
@@ -264,27 +261,24 @@ namespace Follower
         // Floating text - credits to Him, Pog, Smol.
         public void ShowFloatingText(String text, Color32 color)
         {
-            if (sceneInformation == null || sceneInformation.LINCIADNPEO == null || sceneInformation.LINCIADNPEO.IGAEPHOHOCF == null)
-            {
-              
-                return;
-            }
+
 
             Il2CppSystem.Nullable<Color32> newColor = new Il2CppSystem.Nullable<Color32>(color);
 
-            DPCOFEPKKLI effectType = DPCOFEPKKLI.Xp;
+            MPFFENCAICI effectType = MPFFENCAICI.Xp;
 
             if (!floatingtext)
             {
                 for (int i = 0; i < 12; i++)
                 {
-                    sceneInformation.LINCIADNPEO.IGAEPHOHOCF.ShowFloatingText(effectType, "", newColor, 0.0f, 0.0f,
+                    sceneInformation?.HMBPMEGLIKJ.BCJJIBCCFLI.iGUIManager.ShowFloatingText(effectType, "", newColor, 0.0f, 0.0f,
                         0.0f);
                 }
                 floatingtext = true;
             }
 
-            sceneInformation.LINCIADNPEO.IGAEPHOHOCF.ShowFloatingText(effectType, text, newColor, 0.0f, 0.0f, 0.0f);
+            sceneInformation?.HMBPMEGLIKJ.BCJJIBCCFLI.iGUIManager.ShowFloatingText(effectType, text, newColor, 0.0f, 0.0f, 0.0f);
+            sceneInformation?.HMBPMEGLIKJ.JMMBCMBPCBF(color);
         }
 
 
@@ -303,16 +297,18 @@ namespace Follower
 
 
         // Collisions
+
+
         private void StoreCollision()
         {
-            if (sceneInformation?.JHBEGLMFGDN == null) return;
-
-            foreach (var entry in sceneInformation.JHBEGLMFGDN)
+            if (sceneInformation?.IEBGLNKIIMB == null) return;
+            foreach (var entry in sceneInformation.IEBGLNKIIMB)
             {
                 var enemy = entry.Value;
-                if (enemy?.AFJMDGHHELO?.occupySquare == true)
+                if (enemy?.CIGEHLNDCJL?.occupySquare == true)
                 {
-                    AddCollisionPosition(entry.Key.ToString(), new Vector3(enemy.AFEPKLFLJEJ.x, -enemy.AFEPKLFLJEJ.y, 0f));
+                    enemy.CIGEHLNDCJL.ignoreHit = true;
+                    AddCollisionPosition(entry.Key.ToString(), new Vector3(enemy.NGGPLFAJAAL, -enemy.NFMCMENGEME, 0f));
                 }
             }
         }
@@ -480,10 +476,10 @@ namespace Follower
             if (viewHandler == null) return;
 
             var destroyEntity = viewHandler.destroyEntity;
-            var playerData = destroyEntity.Cast<FNNNKHDEBKH>();
+            var playerData = destroyEntity.Cast<KCHCBJBKCAA>();
             if (playerData == null) return;
 
-            Vector3 currentPlayerPosition = new Vector3(playerData.PKPIGHKIGCC, -playerData.KKGFJOGBMIK, 0);
+            Vector3 currentPlayerPosition = new Vector3(playerData.NGGPLFAJAAL, -playerData.NFMCMENGEME, 0);
             if (targetPlayer == null) return;
 
             Vector3 targetPosition = targetPlayer.transform.position;
@@ -509,9 +505,9 @@ namespace Follower
                 }
             }
 
-            playerData.PKPIGHKIGCC = nextPosition.x;
-            playerData.KKGFJOGBMIK = -nextPosition.y;
-            playerData.EJFPHOKPKOC = new Vector3(nextPosition.x, nextPosition.y, 0);
+            playerData.NGGPLFAJAAL = nextPosition.x;
+            playerData.NFMCMENGEME = -nextPosition.y;
+            playerData.MNOAPMOOBKB = new Vector3(nextPosition.x, nextPosition.y, 0);
         }
     }
 }
